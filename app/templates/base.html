@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% if title %}
+    <title>{{ title }} - Le blog des poètes</title>
+    {% else %}
+    <title>Bienvenue sur le blog des poètes !</title>
+    {% endif %}
+</head>
+
+<body>
+    <section>
+        <nav><h1 style="color: darkblue; text-transform: uppercase; text-align: center;font-size: xx-large;">Le blog des poètes : </h1></p>
+        <p style="text-align: center;">
+            <a href="{{ url_for('index') }}">Accueil</a>
+            {% if current_user.is_anonymous %}
+            <a href="{{ url_for('login') }}">Connexion</a>
+            {% else %}
+            <a href="{{ url_for('user', username=current_user.username) }}">Profil</a>
+            <a href="{{ url_for('edit_profile', username=current_user.username) }}"> About Me</a>
+            <a href="{{ url_for('logout') }}">Déconnexion</a>
+            {% endif %}
+        </p>
+        </nav>        
+        {% with messages = get_flashed_messages() %}
+        <h3 style="color: blueviolet; text-align: center;">Voici les derniers messages : </h3>
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </section>
+</body>
+</html>
